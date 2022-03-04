@@ -25,12 +25,14 @@ namespace AhoraSi.Dialogs
             var waterfallSteps = new WaterfallStep[]
             {
                InitialStepAsync,
-               Regresar
+               ConfirmarRegreso,
+               FinalStepAsync
             };
 
             //Agregamos subdialogos
             AddDialog(new WaterfallDialog($"{nameof(vacacionesDialog)}.mainFlow", waterfallSteps));
             AddDialog(new TextPrompt(nameof(vacacionesDialog)));
+            AddDialog(new TextPrompt($"{nameof(vacacionesDialog)}.confirmarRegreso"));
 
             InitialDialogId = $"{nameof(vacacionesDialog)}.mainFlow";
         }
@@ -41,11 +43,44 @@ namespace AhoraSi.Dialogs
             await stepContext.Context.SendActivityAsync($"Para ver información de tus vacaciones ingresa al siguiente link: https://bepensa.csod.com/client/bepensa/default.aspx", cancellationToken: cancellationToken);
             return await stepContext.NextAsync(null, cancellationToken);
         }
-        private async Task<DialogTurnResult> Regresar(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> ConfirmarRegreso(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.EndDialogAsync(null, cancellationToken);
 
+            var options = await stepContext.PromptAsync($"{nameof(vacacionesDialog)}.confirmarRegreso",
+                new PromptOptions
+                {
+                    Prompt = CreateSuggestedActions(stepContext)
+                }, cancellationToken);
+            return options;
         }
+        private Activity CreateSuggestedActions(WaterfallStepContext stepContext)
+        {
+            var reply = MessageFactory.Text($"¿Hay algo más en lo que pueda ayudarte?");
+
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = new List<CardAction>()
+                {
+                    new CardAction(){Title="Sí", Value="SI", Type= ActionTypes.ImBack},
+                    new CardAction(){Title="No", Value="NO", Type= ActionTypes.ImBack},
+                }
+            };
+            return reply;
+        }
+        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            stepContext.Values["confirmarRegreso"] = (string)stepContext.Result;
+            if ((string)stepContext.Values["confirmarRegreso"] == "SI")
+            {
+                return await stepContext.BeginDialogAsync($"{nameof(RootDialog)}.mainFlow", null, cancellationToken);
+            }
+            else
+            {
+                await stepContext.Context.SendActivityAsync($"¡Hasta pronto!", cancellationToken: cancellationToken);
+                return await stepContext.CancelAllDialogsAsync();
+            }
+        }
+
 
     }
 }

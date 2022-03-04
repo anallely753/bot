@@ -39,7 +39,7 @@ namespace AhoraSi.Dialogs
             AddDialog(new infonavitDialog($"{nameof(RootDialog)}.infonavit"));
             AddDialog(new vacacionesDialog($"{nameof(RootDialog)}.vacaciones"));
             AddDialog(new cajaAhorroDialog($"{nameof(RootDialog)}.cajaAhorro"));
-            AddDialog(new cajaAhorroDialog($"{nameof(RootDialog)}.cajaAhorro"));
+            AddDialog(new cajaAhorroDialog($"{nameof(RootDialog)}.beneplus"));
             AddDialog(new FormatoDialog($"{nameof(RootDialog)}.formato"));
 
             InitialDialogId = $"{nameof(RootDialog)}.mainFlow";
