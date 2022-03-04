@@ -24,38 +24,27 @@ namespace AhoraSi.Dialogs
             //Creamos pasos de la cascada
             var waterfallSteps = new WaterfallStep[]
             {
-                InitialStepAsync,
-                DescargarFormatoStepAsync,
+               InitialStepAsync,
+               Regresar
             };
 
             //Agregamos subdialogos
             AddDialog(new WaterfallDialog($"{nameof(nominaDialog)}.mainFlow", waterfallSteps));
-            AddDialog(new ChoicePrompt($"{nameof(nominaDialog)}.tipoFormato"));
-            AddDialog(new TextPrompt(nameof(RootDialog)));
-            AddDialog(new TextPrompt($"{nameof(nominaDialog)}.confirmarRegreso"));
-            //Indicamos con cual subdialogo comenzar
+            AddDialog(new TextPrompt(nameof(nominaDialog)));
+
             InitialDialogId = $"{nameof(nominaDialog)}.mainFlow";
         }
 
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync($"{nameof(nominaDialog)}.tipoFormato",
-                new PromptOptions
-                {
-                    Prompt = MessageFactory.Text("¿Qué formato necesitas?"),
-                    Choices = ChoiceFactory.ToChoices(new List<string> { "Vacaciones", "Permiso", "Acceso", "Constancia laboral" }),
-                    Style = ListStyle.HeroCard
-                }, cancellationToken);
-        }
-        private async Task<DialogTurnResult> DescargarFormatoStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var option = stepContext.Context.Activity.Text;
-            var documentoCard = new Attachment();
-            await stepContext.Context.SendActivityAsync($"Aquí tienes, descarga tu formato de {option}", cancellationToken: cancellationToken);
-            await stepContext.Context.SendActivityAsync(AttachmentCard.GetFile(option), cancellationToken);
-           
+            await stepContext.Context.SendActivityAsync($"Para consultar información de tu nómina ingresa al siguiente link: https://bepensa.csod.com/client/bepensa/default.aspx", cancellationToken: cancellationToken);
             return await stepContext.NextAsync(null, cancellationToken);
+        }
+        private async Task<DialogTurnResult> Regresar(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            return await stepContext.EndDialogAsync(null, cancellationToken);
+
         }
 
     }

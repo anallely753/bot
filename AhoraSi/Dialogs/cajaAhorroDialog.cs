@@ -35,9 +35,10 @@ namespace AhoraSi.Dialogs
             return await stepContext.NextAsync(null, cancellationToken);
         }
 
-        private Task<DialogTurnResult> Regresar(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> Regresar(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await stepContext.EndDialogAsync(null, cancellationToken);
+
         }
     }
 }
