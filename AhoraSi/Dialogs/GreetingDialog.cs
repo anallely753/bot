@@ -34,6 +34,7 @@ namespace AhoraSi.Dialogs
         public class Bread
         {
             public static int pos;
+            public static int bandera;
         }
         private async Task<bool> ValidateBirth(PromptValidatorContext<string> promptContext, CancellationToken cancellationToken)
         {
@@ -436,6 +437,7 @@ namespace AhoraSi.Dialogs
 };
             if (birth_empleados[Bread.pos] == birth)
             {
+                Bread.bandera = 1;
                 return true;
             }
             else

@@ -27,11 +27,11 @@ namespace AhoraSi.Dialogs
                 FinalStepAsync, 
             };
 
-            
 
 
-            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallStep));
-            AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
+
+            AddDialog(new WaterfallDialog($"{nameof(RootDialog)}.mainFlow", waterfallStep));
+            AddDialog(new ChoicePrompt($"{nameof(ChoicePrompt)}.choice"));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt), ConfirmValidate));
 
             AddDialog(new GreetingDialog($"{nameof(RootDialog)}.greeting"));
@@ -42,14 +42,22 @@ namespace AhoraSi.Dialogs
             AddDialog(new cajaAhorroDialog($"{nameof(RootDialog)}.cajaAhorro"));
             AddDialog(new FormatoDialog($"{nameof(RootDialog)}.formato"));
 
+            InitialDialogId = $"{nameof(RootDialog)}.mainFlow";
+
         }
         public class Bread
         {
             public static int pos;
+            public static int bandera;
         }
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            if(Bread.bandera == 1)
+            {
+                return await stepContext.NextAsync(stepContext, cancellationToken);
+            }
+            Bread.bandera = 1;
             return await stepContext.BeginDialogAsync($"{nameof(RootDialog)}.greeting", null, cancellationToken);
         }
 
@@ -451,8 +459,11 @@ namespace AhoraSi.Dialogs
 "De Jesus Martinez Escolastica"
 };
             string nombre = nombre_empleados[Bread.pos];
+            if (Bread.bandera != 1)
+            {
+                await stepContext.Context.SendActivityAsync($"Hola {nombre}", cancellationToken: cancellationToken);
+            }
             
-            await stepContext.Context.SendActivityAsync($"Hola {nombre}", cancellationToken: cancellationToken);
             return await OptionButton.ShowOptions(stepContext, cancellationToken);
         }
 
@@ -492,13 +503,8 @@ namespace AhoraSi.Dialogs
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync("Ok", cancellationToken: cancellationToken);
-            return await stepContext.BeginDialogAsync($"{nameof(RootDialog)}.nominaDialog", null, cancellationToken);
-
-            //return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+           return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
-
-
 
     }
 }

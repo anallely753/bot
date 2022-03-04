@@ -15,7 +15,7 @@ namespace AhoraSi.Commons
         public static async Task<DialogTurnResult> ShowOptions(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var option = await stepContext.PromptAsync(
-                nameof(ChoicePrompt),
+                $"{nameof(ChoicePrompt)}.choice",
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text("¿Cómo puedo ayudarte?"),
