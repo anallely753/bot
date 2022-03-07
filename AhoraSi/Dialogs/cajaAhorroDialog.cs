@@ -36,7 +36,7 @@ namespace AhoraSi.Dialogs
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync($"Para ver tu caja de ahorro ingresa al siguiente link: https://bepensa.csod.com/client/bepensa/default.aspx", cancellationToken: cancellationToken);
+            await stepContext.Context.SendActivityAsync($"Mira la información de tu caja de ahorro aquí: https://bepensa.csod.com/client/bepensa/default.aspx", cancellationToken: cancellationToken);
             return await stepContext.NextAsync(null, cancellationToken);
         }
 

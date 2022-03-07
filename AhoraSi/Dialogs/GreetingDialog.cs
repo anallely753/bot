@@ -872,7 +872,7 @@ namespace AhoraSi.Dialogs
                nameof(NumberPrompt<int>),
                new PromptOptions
                {
-                   Prompt = MessageFactory.Text("Bienvenid@, por favor ingresa tu número de empleado"),
+                   Prompt = MessageFactory.Text("Bienvenid@, comparteme tu número de empleado, por favor"),
                    RetryPrompt = MessageFactory.Text("Por favor ingresa un número de empleado válido")
                },
                cancellationToken
@@ -885,8 +885,8 @@ namespace AhoraSi.Dialogs
                nameof(TextPrompt),
                new PromptOptions
                {
-                   Prompt = MessageFactory.Text("Para validar tu identidad por favor ingresa tu fecha de nacimiento (dd/mm/aaaa) "),
-                   RetryPrompt = MessageFactory.Text("La fecha no coincide, por favor intenta de nuevo")
+                   Prompt = MessageFactory.Text("Para validar tu identidad ingresa tu fecha de nacimiento, por favor (dd/mm/aaaa)"),
+                   RetryPrompt = MessageFactory.Text("La fecha no coincide, por favor intenta de nuevo. Recuerda que el formato es (dd/mm/aaaa)")
                },
                cancellationToken
            );

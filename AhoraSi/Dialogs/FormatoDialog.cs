@@ -29,15 +29,15 @@ namespace AhoraSi.Dialogs
             };
 
             //Agregamos subdialogos
-            AddDialog(new WaterfallDialog($"{nameof(nominaDialog)}.mainFlow", waterfallSteps));
-            AddDialog(new ChoicePrompt($"{nameof(nominaDialog)}.tipoFormato"));
+            AddDialog(new WaterfallDialog($"{nameof(FormatoDialog)}.mainFlow", waterfallSteps));
+            AddDialog(new ChoicePrompt($"{nameof(FormatoDialog)}.tipoFormato"));
             AddDialog(new TextPrompt(nameof(RootDialog)));
-            AddDialog(new TextPrompt($"{nameof(nominaDialog)}.confirmarRegreso"));
+            AddDialog(new TextPrompt($"{nameof(FormatoDialog)}.confirmarRegreso"));
             //Indicamos con cual subdialogo comenzar
         }
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.PromptAsync($"{nameof(nominaDialog)}.tipoFormato",
+            return await stepContext.PromptAsync($"{nameof(FormatoDialog)}.tipoFormato",
                 new PromptOptions
                 {
                     Prompt = MessageFactory.Text("¿Qué formato necesitas?"),
@@ -57,7 +57,7 @@ namespace AhoraSi.Dialogs
         private async Task<DialogTurnResult> ConfirmarRegreso(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
 
-            var options = await stepContext.PromptAsync($"{nameof(cajaAhorroDialog)}.confirmarRegreso",
+            var options = await stepContext.PromptAsync($"{nameof(FormatoDialog)}.confirmarRegreso",
                 new PromptOptions
                 {
                     Prompt = CreateSuggestedActions(stepContext)
