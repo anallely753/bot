@@ -58,8 +58,8 @@ namespace AhoraSi.Dialogs
             {
                 Actions = new List<CardAction>()
                 {
-                    new CardAction(){Title="Sí", Value="SI", Type= ActionTypes.ImBack},
-                    new CardAction(){Title="No", Value="NO", Type= ActionTypes.ImBack},
+                    new CardAction(){Title="Sí", Value="Sí", Type= ActionTypes.ImBack},
+                    new CardAction(){Title="No", Value="No", Type= ActionTypes.ImBack},
                 }
             };
             return reply;
@@ -67,14 +67,14 @@ namespace AhoraSi.Dialogs
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             stepContext.Values["confirmarRegreso"] = (string)stepContext.Result;
-            if ((string)stepContext.Values["confirmarRegreso"] == "SI")
+            if ((string)stepContext.Values["confirmarRegreso"] == "Sí")
             {
                 return await stepContext.BeginDialogAsync($"{nameof(RootDialog)}.mainFlow", null, cancellationToken);
             }
             else
             {
                 await stepContext.Context.SendActivityAsync($"¡Hasta pronto!", cancellationToken: cancellationToken);
-                return await stepContext.CancelAllDialogsAsync();
+                return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
             }
         }
     }

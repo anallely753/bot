@@ -872,7 +872,7 @@ namespace AhoraSi.Dialogs
                nameof(NumberPrompt<int>),
                new PromptOptions
                {
-                   Prompt = MessageFactory.Text("Bienvenid@, comparteme tu número de empleado, por favor"),
+                   Prompt = MessageFactory.Text("Bienvenid@, comparteme tu número de empleado, por favor."),
                    RetryPrompt = MessageFactory.Text("Por favor ingresa un número de empleado válido")
                },
                cancellationToken

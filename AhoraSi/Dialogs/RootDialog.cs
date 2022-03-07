@@ -15,7 +15,7 @@ namespace AhoraSi.Dialogs
 {
     public class RootDialog: ComponentDialog
     {
-        private object stepContext;
+        //private object stepContext;
 
         public RootDialog()
         {
@@ -27,9 +27,6 @@ namespace AhoraSi.Dialogs
                 FinalStepAsync, 
             };
 
-
-
-
             AddDialog(new WaterfallDialog($"{nameof(RootDialog)}.mainFlow", waterfallStep));
             AddDialog(new ChoicePrompt($"{nameof(ChoicePrompt)}.choice"));
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt), ConfirmValidate));
@@ -39,7 +36,7 @@ namespace AhoraSi.Dialogs
             AddDialog(new infonavitDialog($"{nameof(RootDialog)}.infonavit"));
             AddDialog(new vacacionesDialog($"{nameof(RootDialog)}.vacaciones"));
             AddDialog(new cajaAhorroDialog($"{nameof(RootDialog)}.cajaAhorro"));
-            AddDialog(new cajaAhorroDialog($"{nameof(RootDialog)}.beneplus"));
+            AddDialog(new beneplusDialog($"{nameof(RootDialog)}.beneplus"));
             AddDialog(new FormatoDialog($"{nameof(RootDialog)}.formato"));
 
             InitialDialogId = $"{nameof(RootDialog)}.mainFlow";
@@ -53,11 +50,10 @@ namespace AhoraSi.Dialogs
 
         private async Task<DialogTurnResult> InitialStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if(Bread.bandera == 1)
+            if (Bread.bandera == 1)
             {
                 return await stepContext.NextAsync(stepContext, cancellationToken);
             }
-            Bread.bandera = 1;
             return await stepContext.BeginDialogAsync($"{nameof(RootDialog)}.greeting", null, cancellationToken);
         }
 
@@ -461,9 +457,9 @@ namespace AhoraSi.Dialogs
             string nombre = nombre_empleados[Bread.pos];
             if (Bread.bandera != 1)
             {
-                await stepContext.Context.SendActivityAsync($"Hola {nombre}", cancellationToken: cancellationToken);
+                await stepContext.Context.SendActivityAsync($"Hola,{nombre}", cancellationToken: cancellationToken);
             }
-            
+            Bread.bandera = 1;
             return await OptionButton.ShowOptions(stepContext, cancellationToken);
         }
 
@@ -497,13 +493,14 @@ namespace AhoraSi.Dialogs
             if (option)
                 await promptContext.Context.SendActivityAsync("Ok", cancellationToken: cancellationToken);
             else
-                await promptContext.Context.SendActivityAsync("¡Hasta pronto!", cancellationToken: cancellationToken);
+                await promptContext.Context.SendActivityAsync("¡Hasta pronto!.", cancellationToken: cancellationToken);
             return true;
         }
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-           return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+            Bread.bandera = 0;
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
 
     }

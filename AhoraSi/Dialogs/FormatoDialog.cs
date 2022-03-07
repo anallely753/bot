@@ -87,7 +87,7 @@ namespace AhoraSi.Dialogs
             }
             else
             {
-                await stepContext.Context.SendActivityAsync($"¡Hasta pronto!", cancellationToken: cancellationToken);
+                await stepContext.Context.SendActivityAsync($"¡Hasta pronto!.", cancellationToken: cancellationToken);
                 return await stepContext.CancelAllDialogsAsync();
             }
         }
